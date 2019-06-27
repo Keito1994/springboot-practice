@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  server:
+    image: adoptopenjdk/openjdk8:alpine
+    container_name: springboot-practice
+    working_dir: /var/app
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ".:/var/app:cached"
+      - "~/.gradle:/root/.gradle"
+    environment:
+      TZ: Asia/Tokyo
+      LANG: "ja_JP.UTF-8"
+      LANGUAGE: "ja_JP.UTF-8"
+      LC_ALL: "ja_JP.UTF-8"
+      GRADLE_OPTS: "-Dfile.encoding=utf-8"
+  #    command: ./gradlew bootRun
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./db/mysql_data:/var/lib/mysql"
+      - "./config/my.cnf:/etc/mysql/my.cnf"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: sample
+      BIND-ADDRESS: 0.0.0.0
